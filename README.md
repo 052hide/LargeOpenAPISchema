@@ -32,5 +32,5 @@ yarn generate:client
 ### OAS schemaとexamplesの整合性チェック
 
 ```sh
-yarn generate:client
+yarn validate:oas-examples
 ```
