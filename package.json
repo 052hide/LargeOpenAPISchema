@@ -1,0 +1,18 @@
+{
+  "name": "large-open-api-schema",
+  "private": true,
+  "scripts": {
+    "generate:client": "openapi-generator-cli generate -g typescript-axios -c ./client/config.yml -i ./full.yml -o ./client/generated"
+  },
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.5.1",
+    "typescript": "^4.7.4"
+  },
+  "volta": {
+    "node": "16.15.0",
+    "yarn": "1.22.18"
+  }
+}
