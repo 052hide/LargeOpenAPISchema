@@ -2,13 +2,16 @@
   "name": "large-open-api-schema",
   "private": true,
   "scripts": {
-    "generate:client": "openapi-generator-cli generate -g typescript-axios -c ./client/config.yml -i ./full.yml -o ./client/generated"
+    "bundle:oas": "swagger-cli bundle api/root.yml --o _build/openapi.yml --t yaml",
+    "generate:oas-json": "swagger-cli -r -o _build/openapi.json bundle _build/openapi.yml -t json",
+    "generate:client": "yarn bundle:oas && yarn generate:oas-json && openapi-generator-cli generate -g typescript-axios -c ./client/config.yml -i ./_build/openapi.yml -o ./client/generated",
+    "validate:oas-examples": "openapi-examples-validator _build/openapi.yml"
   },
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.5.1",
+    "openapi-examples-validator": "^4.7.0",
+    "swagger-cli": "^4.0.4",
     "typescript": "^4.7.4"
   },
   "volta": {

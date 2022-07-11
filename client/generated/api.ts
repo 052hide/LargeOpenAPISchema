@@ -24,37 +24,6 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
- * @interface Address
- */
-export interface Address {
-    /**
-     * 
-     * @type {string}
-     * @memberof Address
-     */
-    'street'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Address
-     */
-    'city'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Address
-     */
-    'state'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Address
-     */
-    'zip'?: string;
-}
-/**
- * 
- * @export
  * @interface ApiResponse
  */
 export interface ApiResponse {
@@ -96,83 +65,6 @@ export interface Category {
      */
     'name'?: string;
 }
-/**
- * 
- * @export
- * @interface Customer
- */
-export interface Customer {
-    /**
-     * 
-     * @type {number}
-     * @memberof Customer
-     */
-    'id'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Customer
-     */
-    'username'?: string;
-    /**
-     * 
-     * @type {Array<Address>}
-     * @memberof Customer
-     */
-    'address'?: Array<Address>;
-}
-/**
- * 
- * @export
- * @interface Order
- */
-export interface Order {
-    /**
-     * 
-     * @type {number}
-     * @memberof Order
-     */
-    'id'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Order
-     */
-    'petId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Order
-     */
-    'quantity'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Order
-     */
-    'shipDate'?: string;
-    /**
-     * Order Status
-     * @type {string}
-     * @memberof Order
-     */
-    'status'?: OrderStatusEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Order
-     */
-    'complete'?: boolean;
-}
-
-export const OrderStatusEnum = {
-    placed: 'placed',
-    approved: 'approved',
-    delivered: 'delivered'
-} as const;
-
-export type OrderStatusEnum = typeof OrderStatusEnum[keyof typeof OrderStatusEnum];
-
 /**
  * 
  * @export
@@ -244,61 +136,6 @@ export interface Tag {
      */
     'name'?: string;
 }
-/**
- * 
- * @export
- * @interface User
- */
-export interface User {
-    /**
-     * 
-     * @type {number}
-     * @memberof User
-     */
-    'id'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    'username'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    'firstName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    'lastName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    'email'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    'password'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    'phone'?: string;
-    /**
-     * User Status
-     * @type {number}
-     * @memberof User
-     */
-    'userStatus'?: number;
-}
 
 /**
  * PetApi - axios parameter creator
@@ -309,14 +146,12 @@ export const PetApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Add a new pet to the store
          * @summary Add a new pet to the store
-         * @param {Pet} pet Create a new pet in the store
+         * @param {Pet} [pet] Pet object that needs to be added to the store
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addPet: async (pet: Pet, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pet' is not null or undefined
-            assertParamExists('addPet', 'pet', pet)
-            const localVarPath = `/pet`;
+        addPet: async (pet?: Pet, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/pets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -357,7 +192,7 @@ export const PetApiAxiosParamCreator = function (configuration?: Configuration) 
         deletePet: async (petId: number, apiKey?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'petId' is not null or undefined
             assertParamExists('deletePet', 'petId', petId)
-            const localVarPath = `/pet/{petId}`
+            const localVarPath = `/pets/{petId}`
                 .replace(`{${"petId"}}`, encodeURIComponent(String(petId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -397,7 +232,7 @@ export const PetApiAxiosParamCreator = function (configuration?: Configuration) 
          * @throws {RequiredError}
          */
         findPetsByStatus: async (status?: 'available' | 'pending' | 'sold', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/pet/findByStatus`;
+            const localVarPath = `/pets/findByStatus`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -436,7 +271,7 @@ export const PetApiAxiosParamCreator = function (configuration?: Configuration) 
          * @throws {RequiredError}
          */
         findPetsByTags: async (tags?: Array<string>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/pet/findByTags`;
+            const localVarPath = `/pets/findByTags`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -477,7 +312,7 @@ export const PetApiAxiosParamCreator = function (configuration?: Configuration) 
         getPetById: async (petId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'petId' is not null or undefined
             assertParamExists('getPetById', 'petId', petId)
-            const localVarPath = `/pet/{petId}`
+            const localVarPath = `/pets/{petId}`
                 .replace(`{${"petId"}}`, encodeURIComponent(String(petId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -511,14 +346,12 @@ export const PetApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Update an existing pet by Id
          * @summary Update an existing pet
-         * @param {Pet} pet Update an existent pet in the store
+         * @param {Pet} [pet] Pet object that needs to be added to the store
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePet: async (pet: Pet, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pet' is not null or undefined
-            assertParamExists('updatePet', 'pet', pet)
-            const localVarPath = `/pet`;
+        updatePet: async (pet?: Pet, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/pets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -560,7 +393,7 @@ export const PetApiAxiosParamCreator = function (configuration?: Configuration) 
         updatePetWithForm: async (petId: number, name?: string, status?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'petId' is not null or undefined
             assertParamExists('updatePetWithForm', 'petId', petId)
-            const localVarPath = `/pet/{petId}`
+            const localVarPath = `/pets/{petId}`
                 .replace(`{${"petId"}}`, encodeURIComponent(String(petId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -608,7 +441,7 @@ export const PetApiAxiosParamCreator = function (configuration?: Configuration) 
         uploadFile: async (petId: number, additionalMetadata?: string, body?: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'petId' is not null or undefined
             assertParamExists('uploadFile', 'petId', petId)
-            const localVarPath = `/pet/{petId}/uploadImage`
+            const localVarPath = `/pets/{petId}/uploadImage`
                 .replace(`{${"petId"}}`, encodeURIComponent(String(petId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -656,11 +489,11 @@ export const PetApiFp = function(configuration?: Configuration) {
         /**
          * Add a new pet to the store
          * @summary Add a new pet to the store
-         * @param {Pet} pet Create a new pet in the store
+         * @param {Pet} [pet] Pet object that needs to be added to the store
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addPet(pet: Pet, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Pet>> {
+        async addPet(pet?: Pet, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Pet>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.addPet(pet, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -712,11 +545,11 @@ export const PetApiFp = function(configuration?: Configuration) {
         /**
          * Update an existing pet by Id
          * @summary Update an existing pet
-         * @param {Pet} pet Update an existent pet in the store
+         * @param {Pet} [pet] Pet object that needs to be added to the store
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updatePet(pet: Pet, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Pet>> {
+        async updatePet(pet?: Pet, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Pet>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updatePet(pet, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -759,11 +592,11 @@ export const PetApiFactory = function (configuration?: Configuration, basePath?:
         /**
          * Add a new pet to the store
          * @summary Add a new pet to the store
-         * @param {Pet} pet Create a new pet in the store
+         * @param {Pet} [pet] Pet object that needs to be added to the store
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addPet(pet: Pet, options?: any): AxiosPromise<Pet> {
+        addPet(pet?: Pet, options?: any): AxiosPromise<Pet> {
             return localVarFp.addPet(pet, options).then((request) => request(axios, basePath));
         },
         /**
@@ -810,11 +643,11 @@ export const PetApiFactory = function (configuration?: Configuration, basePath?:
         /**
          * Update an existing pet by Id
          * @summary Update an existing pet
-         * @param {Pet} pet Update an existent pet in the store
+         * @param {Pet} [pet] Pet object that needs to be added to the store
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePet(pet: Pet, options?: any): AxiosPromise<Pet> {
+        updatePet(pet?: Pet, options?: any): AxiosPromise<Pet> {
             return localVarFp.updatePet(pet, options).then((request) => request(axios, basePath));
         },
         /**
@@ -851,11 +684,11 @@ export const PetApiFactory = function (configuration?: Configuration, basePath?:
  */
 export interface PetApiAddPetRequest {
     /**
-     * Create a new pet in the store
+     * Pet object that needs to be added to the store
      * @type {Pet}
      * @memberof PetApiAddPet
      */
-    readonly pet: Pet
+    readonly pet?: Pet
 }
 
 /**
@@ -928,11 +761,11 @@ export interface PetApiGetPetByIdRequest {
  */
 export interface PetApiUpdatePetRequest {
     /**
-     * Update an existent pet in the store
+     * Pet object that needs to be added to the store
      * @type {Pet}
      * @memberof PetApiUpdatePet
      */
-    readonly pet: Pet
+    readonly pet?: Pet
 }
 
 /**
@@ -1006,7 +839,7 @@ export class PetApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PetApi
      */
-    public addPet(requestParameters: PetApiAddPetRequest, options?: AxiosRequestConfig) {
+    public addPet(requestParameters: PetApiAddPetRequest = {}, options?: AxiosRequestConfig) {
         return PetApiFp(this.configuration).addPet(requestParameters.pet, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -1066,7 +899,7 @@ export class PetApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PetApi
      */
-    public updatePet(requestParameters: PetApiUpdatePetRequest, options?: AxiosRequestConfig) {
+    public updatePet(requestParameters: PetApiUpdatePetRequest = {}, options?: AxiosRequestConfig) {
         return PetApiFp(this.configuration).updatePet(requestParameters.pet, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -1092,962 +925,6 @@ export class PetApi extends BaseAPI {
      */
     public uploadFile(requestParameters: PetApiUploadFileRequest, options?: AxiosRequestConfig) {
         return PetApiFp(this.configuration).uploadFile(requestParameters.petId, requestParameters.additionalMetadata, requestParameters.body, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-/**
- * StoreApi - axios parameter creator
- * @export
- */
-export const StoreApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
-         * @summary Delete purchase order by ID
-         * @param {number} orderId ID of the order that needs to be deleted
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteOrder: async (orderId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'orderId' is not null or undefined
-            assertParamExists('deleteOrder', 'orderId', orderId)
-            const localVarPath = `/store/order/{orderId}`
-                .replace(`{${"orderId"}}`, encodeURIComponent(String(orderId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns a map of status codes to quantities
-         * @summary Returns pet inventories by status
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getInventory: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/store/inventory`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication api_key required
-            await setApiKeyToObject(localVarHeaderParameter, "api_key", configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions.
-         * @summary Find purchase order by ID
-         * @param {number} orderId ID of order that needs to be fetched
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getOrderById: async (orderId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'orderId' is not null or undefined
-            assertParamExists('getOrderById', 'orderId', orderId)
-            const localVarPath = `/store/order/{orderId}`
-                .replace(`{${"orderId"}}`, encodeURIComponent(String(orderId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Place a new order in the store
-         * @summary Place an order for a pet
-         * @param {Order} [order] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        placeOrder: async (order?: Order, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/store/order`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(order, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * StoreApi - functional programming interface
- * @export
- */
-export const StoreApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = StoreApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
-         * @summary Delete purchase order by ID
-         * @param {number} orderId ID of the order that needs to be deleted
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async deleteOrder(orderId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteOrder(orderId, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * Returns a map of status codes to quantities
-         * @summary Returns pet inventories by status
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getInventory(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<{ [key: string]: number; }>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getInventory(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions.
-         * @summary Find purchase order by ID
-         * @param {number} orderId ID of order that needs to be fetched
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getOrderById(orderId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Order>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getOrderById(orderId, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * Place a new order in the store
-         * @summary Place an order for a pet
-         * @param {Order} [order] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async placeOrder(order?: Order, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Order>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.placeOrder(order, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-    }
-};
-
-/**
- * StoreApi - factory interface
- * @export
- */
-export const StoreApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = StoreApiFp(configuration)
-    return {
-        /**
-         * For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
-         * @summary Delete purchase order by ID
-         * @param {number} orderId ID of the order that needs to be deleted
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteOrder(orderId: number, options?: any): AxiosPromise<void> {
-            return localVarFp.deleteOrder(orderId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns a map of status codes to quantities
-         * @summary Returns pet inventories by status
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getInventory(options?: any): AxiosPromise<{ [key: string]: number; }> {
-            return localVarFp.getInventory(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions.
-         * @summary Find purchase order by ID
-         * @param {number} orderId ID of order that needs to be fetched
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getOrderById(orderId: number, options?: any): AxiosPromise<Order> {
-            return localVarFp.getOrderById(orderId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Place a new order in the store
-         * @summary Place an order for a pet
-         * @param {Order} [order] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        placeOrder(order?: Order, options?: any): AxiosPromise<Order> {
-            return localVarFp.placeOrder(order, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for deleteOrder operation in StoreApi.
- * @export
- * @interface StoreApiDeleteOrderRequest
- */
-export interface StoreApiDeleteOrderRequest {
-    /**
-     * ID of the order that needs to be deleted
-     * @type {number}
-     * @memberof StoreApiDeleteOrder
-     */
-    readonly orderId: number
-}
-
-/**
- * Request parameters for getOrderById operation in StoreApi.
- * @export
- * @interface StoreApiGetOrderByIdRequest
- */
-export interface StoreApiGetOrderByIdRequest {
-    /**
-     * ID of order that needs to be fetched
-     * @type {number}
-     * @memberof StoreApiGetOrderById
-     */
-    readonly orderId: number
-}
-
-/**
- * Request parameters for placeOrder operation in StoreApi.
- * @export
- * @interface StoreApiPlaceOrderRequest
- */
-export interface StoreApiPlaceOrderRequest {
-    /**
-     * 
-     * @type {Order}
-     * @memberof StoreApiPlaceOrder
-     */
-    readonly order?: Order
-}
-
-/**
- * StoreApi - object-oriented interface
- * @export
- * @class StoreApi
- * @extends {BaseAPI}
- */
-export class StoreApi extends BaseAPI {
-    /**
-     * For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
-     * @summary Delete purchase order by ID
-     * @param {StoreApiDeleteOrderRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof StoreApi
-     */
-    public deleteOrder(requestParameters: StoreApiDeleteOrderRequest, options?: AxiosRequestConfig) {
-        return StoreApiFp(this.configuration).deleteOrder(requestParameters.orderId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Returns a map of status codes to quantities
-     * @summary Returns pet inventories by status
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof StoreApi
-     */
-    public getInventory(options?: AxiosRequestConfig) {
-        return StoreApiFp(this.configuration).getInventory(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions.
-     * @summary Find purchase order by ID
-     * @param {StoreApiGetOrderByIdRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof StoreApi
-     */
-    public getOrderById(requestParameters: StoreApiGetOrderByIdRequest, options?: AxiosRequestConfig) {
-        return StoreApiFp(this.configuration).getOrderById(requestParameters.orderId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Place a new order in the store
-     * @summary Place an order for a pet
-     * @param {StoreApiPlaceOrderRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof StoreApi
-     */
-    public placeOrder(requestParameters: StoreApiPlaceOrderRequest = {}, options?: AxiosRequestConfig) {
-        return StoreApiFp(this.configuration).placeOrder(requestParameters.order, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-/**
- * UserApi - axios parameter creator
- * @export
- */
-export const UserApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * This can only be done by the logged in user.
-         * @summary Create user
-         * @param {User} [user] Created user object
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUser: async (user?: User, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/user`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(user, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Creates list of users with given input array
-         * @summary Creates list of users with given input array
-         * @param {Array<User>} [user] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsersWithListInput: async (user?: Array<User>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/user/createWithList`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(user, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * This can only be done by the logged in user.
-         * @summary Delete user
-         * @param {string} username The name that needs to be deleted
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteUser: async (username: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'username' is not null or undefined
-            assertParamExists('deleteUser', 'username', username)
-            const localVarPath = `/user/{username}`
-                .replace(`{${"username"}}`, encodeURIComponent(String(username)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Get user by user name
-         * @param {string} username The name that needs to be fetched. Use user1 for testing. 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getUserByName: async (username: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'username' is not null or undefined
-            assertParamExists('getUserByName', 'username', username)
-            const localVarPath = `/user/{username}`
-                .replace(`{${"username"}}`, encodeURIComponent(String(username)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Logs user into the system
-         * @param {string} [username] The user name for login
-         * @param {string} [password] The password for login in clear text
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        loginUser: async (username?: string, password?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/user/login`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (username !== undefined) {
-                localVarQueryParameter['username'] = username;
-            }
-
-            if (password !== undefined) {
-                localVarQueryParameter['password'] = password;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Logs out current logged in user session
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        logoutUser: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/user/logout`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * This can only be done by the logged in user.
-         * @summary Update user
-         * @param {string} username name that need to be deleted
-         * @param {User} [user] Update an existent user in the store
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateUser: async (username: string, user?: User, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'username' is not null or undefined
-            assertParamExists('updateUser', 'username', username)
-            const localVarPath = `/user/{username}`
-                .replace(`{${"username"}}`, encodeURIComponent(String(username)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(user, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * UserApi - functional programming interface
- * @export
- */
-export const UserApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = UserApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * This can only be done by the logged in user.
-         * @summary Create user
-         * @param {User} [user] Created user object
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async createUser(user?: User, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createUser(user, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * Creates list of users with given input array
-         * @summary Creates list of users with given input array
-         * @param {Array<User>} [user] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async createUsersWithListInput(user?: Array<User>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createUsersWithListInput(user, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * This can only be done by the logged in user.
-         * @summary Delete user
-         * @param {string} username The name that needs to be deleted
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async deleteUser(username: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteUser(username, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Get user by user name
-         * @param {string} username The name that needs to be fetched. Use user1 for testing. 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getUserByName(username: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getUserByName(username, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Logs user into the system
-         * @param {string} [username] The user name for login
-         * @param {string} [password] The password for login in clear text
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async loginUser(username?: string, password?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.loginUser(username, password, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Logs out current logged in user session
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async logoutUser(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.logoutUser(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * This can only be done by the logged in user.
-         * @summary Update user
-         * @param {string} username name that need to be deleted
-         * @param {User} [user] Update an existent user in the store
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async updateUser(username: string, user?: User, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateUser(username, user, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-    }
-};
-
-/**
- * UserApi - factory interface
- * @export
- */
-export const UserApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = UserApiFp(configuration)
-    return {
-        /**
-         * This can only be done by the logged in user.
-         * @summary Create user
-         * @param {User} [user] Created user object
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUser(user?: User, options?: any): AxiosPromise<User> {
-            return localVarFp.createUser(user, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Creates list of users with given input array
-         * @summary Creates list of users with given input array
-         * @param {Array<User>} [user] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsersWithListInput(user?: Array<User>, options?: any): AxiosPromise<User> {
-            return localVarFp.createUsersWithListInput(user, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * This can only be done by the logged in user.
-         * @summary Delete user
-         * @param {string} username The name that needs to be deleted
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteUser(username: string, options?: any): AxiosPromise<void> {
-            return localVarFp.deleteUser(username, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Get user by user name
-         * @param {string} username The name that needs to be fetched. Use user1 for testing. 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getUserByName(username: string, options?: any): AxiosPromise<User> {
-            return localVarFp.getUserByName(username, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Logs user into the system
-         * @param {string} [username] The user name for login
-         * @param {string} [password] The password for login in clear text
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        loginUser(username?: string, password?: string, options?: any): AxiosPromise<string> {
-            return localVarFp.loginUser(username, password, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Logs out current logged in user session
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        logoutUser(options?: any): AxiosPromise<void> {
-            return localVarFp.logoutUser(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * This can only be done by the logged in user.
-         * @summary Update user
-         * @param {string} username name that need to be deleted
-         * @param {User} [user] Update an existent user in the store
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateUser(username: string, user?: User, options?: any): AxiosPromise<void> {
-            return localVarFp.updateUser(username, user, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for createUser operation in UserApi.
- * @export
- * @interface UserApiCreateUserRequest
- */
-export interface UserApiCreateUserRequest {
-    /**
-     * Created user object
-     * @type {User}
-     * @memberof UserApiCreateUser
-     */
-    readonly user?: User
-}
-
-/**
- * Request parameters for createUsersWithListInput operation in UserApi.
- * @export
- * @interface UserApiCreateUsersWithListInputRequest
- */
-export interface UserApiCreateUsersWithListInputRequest {
-    /**
-     * 
-     * @type {Array<User>}
-     * @memberof UserApiCreateUsersWithListInput
-     */
-    readonly user?: Array<User>
-}
-
-/**
- * Request parameters for deleteUser operation in UserApi.
- * @export
- * @interface UserApiDeleteUserRequest
- */
-export interface UserApiDeleteUserRequest {
-    /**
-     * The name that needs to be deleted
-     * @type {string}
-     * @memberof UserApiDeleteUser
-     */
-    readonly username: string
-}
-
-/**
- * Request parameters for getUserByName operation in UserApi.
- * @export
- * @interface UserApiGetUserByNameRequest
- */
-export interface UserApiGetUserByNameRequest {
-    /**
-     * The name that needs to be fetched. Use user1 for testing. 
-     * @type {string}
-     * @memberof UserApiGetUserByName
-     */
-    readonly username: string
-}
-
-/**
- * Request parameters for loginUser operation in UserApi.
- * @export
- * @interface UserApiLoginUserRequest
- */
-export interface UserApiLoginUserRequest {
-    /**
-     * The user name for login
-     * @type {string}
-     * @memberof UserApiLoginUser
-     */
-    readonly username?: string
-
-    /**
-     * The password for login in clear text
-     * @type {string}
-     * @memberof UserApiLoginUser
-     */
-    readonly password?: string
-}
-
-/**
- * Request parameters for updateUser operation in UserApi.
- * @export
- * @interface UserApiUpdateUserRequest
- */
-export interface UserApiUpdateUserRequest {
-    /**
-     * name that need to be deleted
-     * @type {string}
-     * @memberof UserApiUpdateUser
-     */
-    readonly username: string
-
-    /**
-     * Update an existent user in the store
-     * @type {User}
-     * @memberof UserApiUpdateUser
-     */
-    readonly user?: User
-}
-
-/**
- * UserApi - object-oriented interface
- * @export
- * @class UserApi
- * @extends {BaseAPI}
- */
-export class UserApi extends BaseAPI {
-    /**
-     * This can only be done by the logged in user.
-     * @summary Create user
-     * @param {UserApiCreateUserRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UserApi
-     */
-    public createUser(requestParameters: UserApiCreateUserRequest = {}, options?: AxiosRequestConfig) {
-        return UserApiFp(this.configuration).createUser(requestParameters.user, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Creates list of users with given input array
-     * @summary Creates list of users with given input array
-     * @param {UserApiCreateUsersWithListInputRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UserApi
-     */
-    public createUsersWithListInput(requestParameters: UserApiCreateUsersWithListInputRequest = {}, options?: AxiosRequestConfig) {
-        return UserApiFp(this.configuration).createUsersWithListInput(requestParameters.user, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * This can only be done by the logged in user.
-     * @summary Delete user
-     * @param {UserApiDeleteUserRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UserApi
-     */
-    public deleteUser(requestParameters: UserApiDeleteUserRequest, options?: AxiosRequestConfig) {
-        return UserApiFp(this.configuration).deleteUser(requestParameters.username, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Get user by user name
-     * @param {UserApiGetUserByNameRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UserApi
-     */
-    public getUserByName(requestParameters: UserApiGetUserByNameRequest, options?: AxiosRequestConfig) {
-        return UserApiFp(this.configuration).getUserByName(requestParameters.username, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Logs user into the system
-     * @param {UserApiLoginUserRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UserApi
-     */
-    public loginUser(requestParameters: UserApiLoginUserRequest = {}, options?: AxiosRequestConfig) {
-        return UserApiFp(this.configuration).loginUser(requestParameters.username, requestParameters.password, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Logs out current logged in user session
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UserApi
-     */
-    public logoutUser(options?: AxiosRequestConfig) {
-        return UserApiFp(this.configuration).logoutUser(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * This can only be done by the logged in user.
-     * @summary Update user
-     * @param {UserApiUpdateUserRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UserApi
-     */
-    public updateUser(requestParameters: UserApiUpdateUserRequest, options?: AxiosRequestConfig) {
-        return UserApiFp(this.configuration).updateUser(requestParameters.username, requestParameters.user, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

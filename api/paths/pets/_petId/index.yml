@@ -1,0 +1,7 @@
+delete:
+  $ref: './delete.yml'
+get:
+  $ref: './get.yml'
+post:
+  $ref: './post.yml'
+

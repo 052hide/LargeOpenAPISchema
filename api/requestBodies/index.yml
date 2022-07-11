@@ -1,0 +1,2 @@
+PetRequestBody:
+  $ref: './Pet.yml'

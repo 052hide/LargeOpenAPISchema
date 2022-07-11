@@ -1,0 +1,15 @@
+value:
+  id: 10293
+  name: 'doggie'
+  category:
+    id: 129
+    name: 'dogs'
+  photoUrls:
+    - 'example.jpg'
+    - 'example2.jpg'
+  tags:
+    - id: 123423
+      name: 'animal'
+    - id: 173453
+      name: 'example2.jpg'
+  status: 'available'

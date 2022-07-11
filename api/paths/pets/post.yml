@@ -1,0 +1,21 @@
+tags:
+- pet
+summary: Add a new pet to the store
+description: Add a new pet to the store
+operationId: addPet
+requestBody:
+  $ref: '../../requestBodies/Pet.yml'
+  required: true
+responses:
+  "200":
+    description: Successful operation
+    content:
+      application/json:
+        schema:
+          $ref: '../../schemas/Pet.yml'
+  "405":
+    description: Invalid input
+security:
+- petstore_auth:
+  - write:pets
+  - read:pets
